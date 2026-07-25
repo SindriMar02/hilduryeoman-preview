@@ -45,10 +45,10 @@
   /* ── rolling-list categories (21st.dev rolling-list, ported) ── */
   const cnt = CM.counts || {};
   const catData = [
-    { name: 'Dresses', count: String(cnt.dresses || 0).padStart(2, '0'), pool: CM.dresses },
-    { name: 'Jewellery', count: String(cnt.jewellery || 0).padStart(2, '0'), pool: CM.jewellery },
-    { name: 'Tops', count: String(cnt.tops || 0).padStart(2, '0'), pool: CM.tops },
-    { name: 'Shoes', count: String(cnt.shoes || 0).padStart(2, '0'), pool: CM.shoes }
+    { name: 'Dresses', count: String(cnt.dresses || 0), pool: CM.dresses },
+    { name: 'Tops', count: String(cnt.tops || 0), pool: CM.tops },
+    { name: 'Accessories', count: String(cnt.accessories || 0), pool: CM.jewellery },
+    { name: 'Swimwear', count: String(cnt.swimwear || 0), pool: CM.shoes }
   ];
   const cats = $('#cats');
   if (cats) cats.innerHTML = catData.map((c, i) => {
@@ -687,7 +687,7 @@ void main() {
   (function featureCarousel() {
     const host = $('#fcar');
     if (!host) return;
-    const shots = (CM.campaign || []).concat((CM.wall || [])).filter(Boolean).slice(0, 5);
+    const shots = (CM.hero || CM.campaign || []).filter(Boolean).slice(0, 5);
     if (!shots.length) return;
     host.innerHTML = shots.map((u, i) =>
       `<figure class="fcar__i" data-i="${i}"><img src="${px(u, 900)}" alt="Hildur Yeoman AW ’25" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}/></figure>`

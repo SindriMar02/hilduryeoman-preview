@@ -113,7 +113,11 @@ body.menu-open .menu{clip-path:inset(0 0 0 0);pointer-events:auto}
 .hero__stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:clamp(10px,2vw,24px) 0}
 .hero__fig{height:min(58vh,560px);width:auto;object-fit:contain}
 .hero__word{position:absolute;left:0;right:0;bottom:-4%;margin:0;text-align:center;padding:0 var(--pad);
-  font-size:clamp(44px,9.4vw,150px);line-height:.8;color:var(--accent);mix-blend-mode:multiply;z-index:3;pointer-events:none}
+  font-size:clamp(44px,9.4vw,150px);line-height:.8;z-index:3;pointer-events:none;
+  /* `main` is an isolated group (position+z-index), so over the page ground there is
+     no backdrop and the raw colour shows: brand plum. Where it crosses the carousel
+     imagery it genuinely inverts, which is the hue shift. */
+  color:var(--accent);mix-blend-mode:difference}
 .hero__cta{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .hero__tag{color:var(--dim)}
 
@@ -220,7 +224,7 @@ section{padding:clamp(70px,12vw,180px) 0;position:relative}
 .camp__img{width:100%;height:100%;object-fit:cover;object-position:50% 26%;filter:brightness(.82);transform:scale(1.12)}
 .camp__over{position:relative;z-index:2;padding:var(--pad);display:flex;flex-direction:column;gap:18px}
 .camp__over .mono{color:var(--ink);opacity:.75}
-.camp__line{font-size:clamp(48px,10vw,150px);line-height:.86}
+.camp__line{font-size:clamp(48px,10vw,150px);line-height:.86;color:#f7f3ef;mix-blend-mode:difference}
 
 /* ══ CATEGORIES — rolling list (ported from 21st.dev rolling-list) ══ */
 .rolls{padding:0 var(--pad);display:flex;flex-direction:column;border-top:1px solid var(--line)}
@@ -395,7 +399,10 @@ section{padding:clamp(70px,12vw,180px) 0;position:relative}
 /* ── HERO FEATURE CAROUSEL (ported from 21st.dev feature-carousel) ──
    Centre slide sharp and full-scale; neighbours recede with scale, blur,
    opacity and a slight Y-rotation; everything else hidden. */
-.hero__stage{perspective:1000px}
+/* perspective must NOT sit on .hero__stage: it creates an isolated group, which
+   stopped the difference-blended wordmark from seeing the page ground as backdrop
+   (it rendered raw green). Keep it on the carousel itself, as the original does. */
+.fcar{perspective:1000px}
 .fcar{position:relative;width:100%;height:min(62vh,600px)}
 .fcar__i{position:absolute;left:50%;top:50%;width:min(58vw,380px);height:100%;
   margin-left:calc(min(58vw,380px)/-2);margin-top:calc(min(62vh,600px)/-2);
