@@ -98,27 +98,6 @@
   };
   dragify($('#rail')); dragify($('#railS'));
 
-  /* ══ GLITCHING LOGO (header + footer) ══
-     Masked clip replaces the static mark. Only reveals once it can actually play,
-     so a blocked/missing clip leaves the crisp PNG in place. The footer instance
-     is paused while off screen so it never decodes for nothing. */
-  $$('[data-glogo]').forEach(wrap => {
-    const v = $('.glogo__v', wrap);
-    if (!v || reduced) return;                       // reduced motion keeps the PNG
-    const reveal = () => wrap.classList.add('on');
-    v.addEventListener('loadeddata', reveal, { once: true });
-    v.addEventListener('playing', reveal, { once: true });
-    v.addEventListener('error', () => wrap.classList.remove('on'));
-    const kick = () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(([e]) => {
-        if (e.isIntersecting) { if (!v.src && v.querySelector('source')) v.load(); kick(); }
-        else if (!v.paused) v.pause();
-      }, { rootMargin: '15% 0px', threshold: 0.01 }).observe(wrap);
-    } else kick();
-    document.addEventListener('visibilitychange', () => { if (document.hidden) v.pause(); });
-  });
-
   /* ══ RAIL ARROW BUTTONS ══ */
   const railById = id => document.getElementById(id);
   const syncRnav = () => $$('.rnav__b').forEach(b => {
@@ -672,7 +651,7 @@ void main() {
       return;
     }
     /* hero parallax */
-    gsap.to('#heroFig', { yPercent: -7, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('#fcar', { yPercent: -5, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
     /* campaign uncrop + zoom-out */
     const cf = $('#campFrame');
     if (cf) {
@@ -701,116 +680,53 @@ void main() {
     gsap.from('.hero__word', { yPercent: 14, opacity: 0, duration: 1.15, ease: 'power3.out', delay: .2 });
   };
 
+  /* ══ HERO FEATURE CAROUSEL ══
+     Ported from 21st.dev `ravikatiyar162/feature-carousel`: centre slide sharp
+     and full scale, neighbours scaled/blurred/rotated back, rest hidden.
+     Same transform maths, vanilla, with autoplay that pauses on hover. */
+  (function featureCarousel() {
+    const host = $('#fcar');
+    if (!host) return;
+    const shots = (CM.campaign || []).concat((CM.wall || [])).filter(Boolean).slice(0, 5);
+    if (!shots.length) return;
+    host.innerHTML = shots.map((u, i) =>
+      `<figure class="fcar__i" data-i="${i}"><img src="${px(u, 900)}" alt="Hildur Yeoman AW ’25" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}/></figure>`
+    ).join('');
+    const slides = $$('.fcar__i', host);
+    const total = slides.length;
+    let cur = Math.floor(total / 2);
+
+    const layout = () => slides.forEach((el, i) => {
+      let pos = (i - cur + total) % total;
+      if (pos > Math.floor(total / 2)) pos -= total;
+      const centre = pos === 0, adj = Math.abs(pos) === 1;
+      el.style.transform = `translateX(${pos * 45}%) scale(${centre ? 1 : adj ? .85 : .7}) rotateY(${pos * -10}deg)`;
+      el.style.zIndex = centre ? 10 : adj ? 5 : 1;
+      el.style.opacity = centre ? 1 : adj ? .4 : 0;
+      el.style.filter = centre ? 'none' : 'blur(4px)';
+      el.style.visibility = Math.abs(pos) > 1 ? 'hidden' : 'visible';
+    });
+    const go = d => { cur = (cur + d + total) % total; layout(); };
+    layout();
+
+    $('#fcarNext') && $('#fcarNext').addEventListener('click', () => go(1));
+    $('#fcarPrev') && $('#fcarPrev').addEventListener('click', () => go(-1));
+    slides.forEach((el, i) => el.addEventListener('click', () => { cur = i; layout(); }));
+
+    if (!reduced) {
+      let timer = setInterval(() => go(1), 4000);
+      const stop = () => { clearInterval(timer); timer = null; };
+      const play = () => { if (!timer) timer = setInterval(() => go(1), 4000); };
+      host.addEventListener('pointerenter', stop);
+      host.addEventListener('pointerleave', play);
+      document.addEventListener('visibilitychange', () => document.hidden ? stop() : play());
+    }
+  })();
+
   /* ══ preloader ══ */
   let booted = false;
   const boot = () => { if (booted) return; booted = true; document.body.classList.add('ready'); shaderBackground(); choreograph(); heroIn(); if (hasGsap) ScrollTrigger.refresh(); };
   setTimeout(boot, 3600);   // fail-safe: the loader can never stick
-
-  /* Y2K glitch reveal. Inline opacity, set the moment the clip renders a frame,
-     so no stylesheet rule can win over it. Still logo stays if it cannot play. */
-  const glitch = $('#loadGlitch'), still = $('#loadStill');
-  if (glitch) {
-    const showGlitch = () => {
-      if (reduced) return;                       // reduced motion keeps the still
-      glitch.style.opacity = '1';
-      if (still) still.style.opacity = '0';
-    };
-    glitch.addEventListener('loadeddata', showGlitch, { once: true });
-    glitch.addEventListener('playing', showGlitch, { once: true });
-    if (glitch.readyState >= 2) showGlitch();    // already buffered from cache
-    glitch.addEventListener('error', () => {     // clip unavailable: keep the still
-      glitch.style.opacity = '0';
-      if (still) still.style.opacity = '1';
-    });
-    if (!reduced) { const p = glitch.play(); if (p && p.catch) p.catch(() => {}); }
-  }
-
-  /* ══ GLITCH SFX — synthesised, no audio file shipped ══
-     Web Audio costs 0 KB, which matters on a loading screen, and it can be timed
-     to the clip. Browsers suspend AudioContext until a user gesture, so this
-     attempts to start immediately and otherwise fires on the first interaction. */
-  function glitchSfx() {
-    if (reduced) return () => {};
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return () => {};
-    let ctx, noiseBuf, master;
-
-    /* built lazily on first play: never create an AudioContext that may go unused */
-    const init = () => {
-      if (ctx) return true;
-      try { ctx = new AC(); } catch (e) { return false; }
-      noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate);
-      const nd = noiseBuf.getChannelData(0);
-      for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
-      master = ctx.createGain();
-      master.gain.value = 0.16;                   // deliberately restrained
-      master.connect(ctx.destination);
-      return true;
-    };
-
-    // tape/VHS tear: filtered noise burst with a sweeping band
-    const tear = (t, dur, f0, f1) => {
-      const src = ctx.createBufferSource(); src.buffer = noiseBuf;
-      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 7;
-      bp.frequency.setValueAtTime(f0, t);
-      bp.frequency.exponentialRampToValueAtTime(f1, t + dur);
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(1, t + 0.006);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      src.connect(bp); bp.connect(g); g.connect(master);
-      src.start(t); src.stop(t + dur + 0.02);
-    };
-    // digital artefact: hard square blip
-    const blip = (t, dur, freq) => {
-      const o = ctx.createOscillator(); o.type = 'square'; o.frequency.value = freq;
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.5, t + 0.003);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(g); g.connect(master);
-      o.start(t); o.stop(t + dur + 0.02);
-    };
-    // power-down sweep at the end
-    const sweep = (t, dur) => {
-      const o = ctx.createOscillator(); o.type = 'sawtooth';
-      o.frequency.setValueAtTime(900, t);
-      o.frequency.exponentialRampToValueAtTime(60, t + dur);
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.28, t);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(g); g.connect(master);
-      o.start(t); o.stop(t + dur + 0.02);
-    };
-
-    let fired = false;
-    return () => {
-      if (fired) return;
-      if (!init()) return;
-      fired = true;
-      const go = () => {
-        const t = ctx.currentTime + 0.02;
-        tear(t, 0.16, 400, 5200);
-        blip(t + 0.05, 0.04, 1860);
-        tear(t + 0.30, 0.10, 3000, 700);
-        blip(t + 0.38, 0.03, 990);
-        blip(t + 0.44, 0.025, 2400);
-        tear(t + 0.72, 0.20, 800, 6000);
-        blip(t + 0.95, 0.05, 640);
-        tear(t + 1.25, 0.12, 5000, 900);
-        blip(t + 1.42, 0.03, 1500);
-        tear(t + 1.70, 0.09, 1200, 4000);
-        sweep(t + 1.95, 0.55);
-      };
-      if (ctx.state === 'suspended') ctx.resume().then(go).catch(() => {});
-      else go();
-    };
-  }
-  const playGlitch = glitchSfx();
-  playGlitch();                                   // works if autoplay is permitted
-  // otherwise: fire on the very first interaction
-  ['pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(ev =>
-    addEventListener(ev, () => playGlitch(), { once: true, passive: true }));
 
   if (reduced || !hasGsap) boot();
   else gsap.delayedCall(2.5, boot);                // hold on the glitch, then wipe

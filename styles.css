@@ -56,33 +56,36 @@ main,.foot{position:relative;z-index:1}
    exactly, so the video frame can never read as a visible rectangle. */
 .load{position:fixed;inset:0;z-index:200;background:#fff;display:grid;place-items:center;
   overflow:hidden;clip-path:inset(0 0 0 0);transition:clip-path 1.05s var(--ease)}
-.load__mark{position:relative;width:min(78vw,780px);aspect-ratio:2000/443}
-/* still logo: the fallback if the glitch clip cannot play. JS hides it on play. */
-.load__still{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
-  transition:opacity .35s var(--ease)}
-/* Y2K glitch clip: black knocked out via screen blend. Opacity is driven inline
-   by JS (not by a class) so nothing can override it. */
-.load__glitch{position:absolute;inset:-5% -3%;width:106%;height:110%;object-fit:contain;
-  mix-blend-mode:screen;opacity:0;transition:opacity .45s var(--ease);pointer-events:none;z-index:3}
+.load__mark{position:relative;width:min(72vw,640px);display:flex;flex-direction:column;align-items:center;gap:22px}
+/* elegant reveal: blur-to-sharp wordmark, then a plum hairline draws beneath */
+.load__still{width:100%;height:auto;opacity:0;filter:blur(16px);transform:scale(.97);
+  animation:hyIn 1.5s var(--ease) .15s forwards}
+@keyframes hyIn{to{opacity:1;filter:blur(0);transform:scale(1)}}
+.load__line{display:block;width:0;height:1px;background:var(--accent);
+  animation:hyLine 1.2s var(--ease) 1.0s forwards}
+@keyframes hyLine{to{width:58%}}
+.load__sub{opacity:0;animation:hyMeta .8s ease 1.7s forwards}
+@keyframes hyMeta{to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.load__still,.load__sub{animation:none;opacity:1;filter:none;transform:none}.load__line{animation:none;width:58%}}
 
 /* exit: the panel wipes upward, the mark lifts with it */
 body.ready .load{clip-path:inset(0 0 100% 0);pointer-events:none}
 body.ready .load__mark{transform:translateY(-14px) scale(.985);opacity:.85;transition:transform 1s var(--ease),opacity .8s var(--ease)}
 
 /* ══ NAV ══ */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:66px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad);mix-blend-mode:difference;color:#fff}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:66px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad);color:var(--ink);background:linear-gradient(180deg,rgba(247,243,239,.9),rgba(247,243,239,0))}
 .nav.hide{transform:translateY(-100%);transition:transform .5s var(--ease)}
 .nav.show{transform:translateY(0);transition:transform .5s var(--ease)}
 .nav__brand{display:flex;align-items:center;justify-self:center}
 .nav__brand img{height:30px;width:auto;display:block}
 .nav__mid{display:flex;gap:26px;justify-self:start}
-.nav__mid a,.nav__link{font-family:var(--ff-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fff;transition:opacity .3s;opacity:.85}
+.nav__mid a,.nav__link{font-family:var(--ff-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);transition:opacity .3s;opacity:.85}
 .nav__mid a:hover,.nav__link:hover{opacity:1}
 .nav__end{display:flex;gap:20px;align-items:center;justify-self:end}
 /* ── Menu toggle, ported from sndr-studio: text roller + plus that spins to an X.
       GSAP drives the icon rotation and the label roll (see app.js). ── */
 .nav__burger{display:none;align-items:center;gap:.45rem;height:44px;padding:0 2px;margin-right:-2px;
-  background:transparent;border:none;cursor:pointer;color:#fff;
+  background:transparent;border:none;cursor:pointer;color:var(--ink);
   font-family:var(--ff-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
 .sm-toggle-textwrap{position:relative;display:inline-block;height:1em;overflow:hidden;white-space:nowrap}
 .sm-toggle-textinner{display:flex;flex-direction:column;line-height:1}
@@ -109,8 +112,8 @@ body.menu-open .menu{clip-path:inset(0 0 0 0);pointer-events:auto}
 .hero__head{display:flex;justify-content:space-between;gap:16px}
 .hero__stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:clamp(10px,2vw,24px) 0}
 .hero__fig{height:min(58vh,560px);width:auto;object-fit:contain}
-.hero__word{position:absolute;left:0;right:0;bottom:1%;margin:0;text-align:center;padding:0 var(--pad);
-  font-size:clamp(60px,13.5vw,225px);line-height:.78;color:var(--accent);mix-blend-mode:multiply;z-index:3;pointer-events:none}
+.hero__word{position:absolute;left:0;right:0;bottom:-4%;margin:0;text-align:center;padding:0 var(--pad);
+  font-size:clamp(44px,9.4vw,150px);line-height:.8;color:var(--accent);mix-blend-mode:multiply;z-index:3;pointer-events:none}
 .hero__cta{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .hero__tag{color:var(--dim)}
 
@@ -260,7 +263,7 @@ section{padding:clamp(70px,12vw,180px) 0;position:relative}
 @keyframes eq{0%,100%{height:4px}50%{height:16px}}
 
 /* ══ AS SEEN ON — 3D auto-scroll wall ══ */
-.seen{position:relative;height:clamp(600px,112vh,1150px);overflow:hidden;background:var(--bg);padding:0;contain:paint}
+.seen{position:relative;height:clamp(600px,112vh,1150px);overflow:hidden;background:#241624;padding:0;contain:paint}
 /* NO 3D perspective here, deliberately. A perspective+rotateX parent forces the
    compositor to rasterise one huge surface containing every video texture, which
    blew the frame budget and starved Lenis's rAF loop (scrolling died outright).
@@ -275,14 +278,14 @@ section{padding:clamp(70px,12vw,180px) 0;position:relative}
 .seen__col:hover{animation-play-state:paused}
 @keyframes seenUp{from{transform:translateY(0)}to{transform:translateY(-50%)}}
 @keyframes seenDown{from{transform:translateY(-50%)}to{transform:translateY(0)}}
-.seen__card{position:relative;aspect-ratio:9/14;overflow:hidden;background:var(--bg-2);border:1px solid var(--line)}
+.seen__card{position:relative;aspect-ratio:9/14;overflow:hidden;background:#2e1c2e;border:1px solid rgba(247,243,239,.14)}
 .seen__card img,.seen__card video{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1);transition:filter .6s var(--ease),transform 1s var(--ease)}
 .seen__card:hover img,.seen__card:hover video{filter:grayscale(0);transform:scale(1.04)}
-.seen::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(62% 52% at 50% 50%,rgba(247,243,239,.72),transparent 78%)}
+.seen::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(62% 52% at 50% 50%,rgba(36,22,36,.78),transparent 76%)}
 .seen__overlay{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:16px;pointer-events:none;padding:0 var(--pad)}
-.seen__overlay .mono{color:var(--ink)}
-.seen__n{color:var(--accent)!important;mix-blend-mode:normal!important}
-.seen__title{font-family:var(--ff-d);font-weight:600;font-size:clamp(50px,10vw,175px);line-height:.82;text-transform:uppercase;color:var(--accent);mix-blend-mode:multiply}
+.seen__overlay .mono{color:rgba(247,243,239,.82)}
+.seen__n{color:#d98cb8!important;mix-blend-mode:normal!important}
+.seen__title{font-family:var(--ff-d);font-weight:600;font-size:clamp(50px,10vw,175px);line-height:.82;text-transform:uppercase;color:#f7f3ef}
 
 /* ══ LOOKBOOK — horizontal scroll-hijack ══ */
 .pan{overflow:hidden;padding:0}
@@ -387,3 +390,19 @@ section{padding:clamp(70px,12vw,180px) 0;position:relative}
 .nav__brand .glogo img{height:22px;width:auto}
 .nav__brand .glogo .glogo__v{height:100%;width:100%}
 @media(max-width:820px){.nav__brand .glogo,.nav__brand .glogo img{height:16px}}
+
+
+/* ── HERO FEATURE CAROUSEL (ported from 21st.dev feature-carousel) ──
+   Centre slide sharp and full-scale; neighbours recede with scale, blur,
+   opacity and a slight Y-rotation; everything else hidden. */
+.hero__stage{perspective:1000px}
+.fcar{position:relative;width:100%;height:min(62vh,600px)}
+.fcar__i{position:absolute;left:50%;top:50%;width:min(58vw,380px);height:100%;
+  margin-left:calc(min(58vw,380px)/-2);margin-top:calc(min(62vh,600px)/-2);
+  transition:transform .55s var(--ease),opacity .55s var(--ease),filter .55s var(--ease);
+  will-change:transform,opacity,filter}
+.fcar__i img{width:100%;height:100%;object-fit:cover;border:1px solid var(--line);display:block;background:var(--bg-2)}
+.fcar__btn{position:absolute;top:50%;transform:translateY(-50%);z-index:20;background:rgba(247,243,239,.72);backdrop-filter:blur(4px)}
+.fcar__btn--l{left:clamp(4px,3vw,40px)}
+.fcar__btn--r{right:clamp(4px,3vw,40px)}
+@media(max-width:640px){.fcar__btn{display:none}}

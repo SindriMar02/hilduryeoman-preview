@@ -19,14 +19,12 @@
 <!-- ░ GRAIN-GRADIENT BACKGROUND (porcelain + plum, very lowkey) ░ -->
 <canvas class="bars" id="bars" aria-hidden="true"></canvas>
 
-<!-- ░ PRELOADER — the wordmark glitching, with a synthesised glitch SFX ░ -->
+<!-- ░ PRELOADER — soft blur-to-sharp wordmark, plum hairline, silent ░ -->
 <div class="load" id="load">
   <div class="load__mark">
-    <!-- The still logo shows ONLY if the glitch clip cannot play. -->
-    <img class="load__still" id="loadStill" src="assets/logo.png" alt="Hildur Yeoman" />
-    <video class="load__glitch" id="loadGlitch" muted loop playsinline autoplay preload="auto" aria-hidden="true">
-      <source src="assets/logo-glitch.mp4" type="video/mp4" />
-    </video>
+    <img class="load__still" src="assets/logo.png" alt="Hildur Yeoman" />
+    <span class="load__line" aria-hidden="true"></span>
+    <span class="load__sub mono" aria-hidden="true">Reykjavík — AW ’25</span>
   </div>
 </div>
 
@@ -39,12 +37,7 @@
     <a href="#film">Lookbook</a>
   </nav>
   <a href="#top" class="nav__brand" aria-label="Hildur Yeoman">
-    <span class="glogo" data-glogo>
-      <img src="assets/logo-white.png" alt="Hildur Yeoman" />
-      <video class="glogo__v" muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
-        <source src="assets/logo-mark.mp4" type="video/mp4" />
-      </video>
-    </span>
+    <span class="glogo"><img src="assets/logo.png" alt="Hildur Yeoman" /></span>
   </a>
   <div class="nav__end">
     <button class="nav__link" id="searchBtn">Search</button>
@@ -76,8 +69,10 @@
       <span class="mono">AW ’25</span>
     </div>
     <div class="hero__stage">
-      <img class="hero__fig" id="heroFig" alt="Hildur Yeoman AW ’25" fetchpriority="high"
-           src="https://hilduryeoman.com/cdn/shop/files/AW25_15_c09f6e75-bcc4-45cc-a0f0-d3b5493947aa.jpg?v=1763037287&width=900" />
+      <!-- feature-carousel (21st.dev ravikatiyar162/feature-carousel), ported to vanilla -->
+      <div class="fcar" id="fcar" aria-roledescription="carousel" aria-label="AW ’25 campaign"></div>
+      <button class="rnav__b fcar__btn fcar__btn--l" id="fcarPrev" aria-label="Previous image">←</button>
+      <button class="rnav__b fcar__btn fcar__btn--r" id="fcarNext" aria-label="Next image">→</button>
       <h1 class="hero__word">Autumn<br>winter ’25</h1>
     </div>
     <div class="hero__cta">
@@ -201,12 +196,7 @@
 
 <footer class="foot">
   <div class="foot__word">
-    <span class="glogo" data-glogo>
-      <img src="assets/logo.png" alt="Hildur Yeoman" />
-      <video class="glogo__v" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
-        <source src="assets/logo-mark.mp4" type="video/mp4" />
-      </video>
-    </span>
+    <span class="glogo"><img src="assets/logo.png" alt="Hildur Yeoman" /></span>
   </div>
   <div class="foot__grid">
     <div><span class="mono">Shop</span><a href="#ny">New arrivals</a><a href="#flokkar">Dresses</a><a href="#flokkar">Jewellery</a><a href="#flokkar">Shoes</a></div>
