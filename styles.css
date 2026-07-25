@@ -112,12 +112,32 @@ body.menu-open .menu{clip-path:inset(0 0 0 0);pointer-events:auto}
 .hero__head{display:flex;justify-content:space-between;gap:16px}
 .hero__stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:clamp(10px,2vw,24px) 0}
 .hero__fig{height:min(58vh,560px);width:auto;object-fit:contain}
-.hero__word{position:absolute;left:0;right:0;bottom:-4%;margin:0;text-align:center;padding:0 var(--pad);
-  font-size:clamp(44px,9.4vw,150px);line-height:.8;z-index:3;pointer-events:none;
-  /* `main` is an isolated group (position+z-index), so over the page ground there is
-     no backdrop and the raw colour shows: brand plum. Where it crosses the carousel
-     imagery it genuinely inverts, which is the hue shift. */
-  color:var(--accent);mix-blend-mode:difference}
+.hero__word,.hero__ghost{position:absolute;left:0;right:0;bottom:-4%;margin:0;text-align:center;
+  padding:0 var(--pad);font-family:var(--ff-d);font-weight:600;font-size:clamp(44px,9.4vw,150px);
+  line-height:.8;text-transform:uppercase;letter-spacing:.005em;pointer-events:none}
+/* the real headline: brand plum, inverts against photography */
+.hero__word{z-index:4;color:var(--accent);mix-blend-mode:difference;filter:url(#hyMelt)}
+/* chromatic ghosts: offset colour separations that jitter, melted by the same filter */
+.hero__type{position:absolute;inset:0;z-index:3;pointer-events:none}
+.hero__ghost{filter:url(#hyMelt)}
+/* Ghosts are plain palette-coloured offsets (NOT difference): stacking three
+   difference layers compounds into muddy green. Only the real headline inverts. */
+.hero__ghost--c{color:#7a2d80;opacity:.55;animation:hyAbr 3.4s steps(1,end) infinite}
+.hero__ghost--m{color:#c9628f;opacity:.5;animation:hyAbr2 4.1s steps(1,end) infinite}
+@keyframes hyAbr{
+  0%,72%{transform:translate3d(-3px,2px,0)}
+  74%{transform:translate3d(9px,-4px,0)}
+  76%{transform:translate3d(-7px,3px,0)}
+  78%,100%{transform:translate3d(-3px,2px,0)}}
+@keyframes hyAbr2{
+  0%,64%{transform:translate3d(4px,-2px,0)}
+  66%{transform:translate3d(-11px,5px,0)}
+  69%{transform:translate3d(6px,-6px,0)}
+  71%,100%{transform:translate3d(4px,-2px,0)}}
+@media(prefers-reduced-motion:reduce){
+  .hero__ghost--c,.hero__ghost--m{animation:none}
+  .hero__word,.hero__ghost{filter:none}
+}
 .hero__cta{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .hero__tag{color:var(--dim)}
 
