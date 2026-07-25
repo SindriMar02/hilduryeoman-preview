@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Hildur Yeoman — Reykjavík · AW ’25</title>
+<meta name="description" content="Hildur Yeoman. Icelandic fashion designer. AW ’25. Laugavegur 7, 101 Reykjavík." />
+<meta name="theme-color" content="#f7f3ef" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://cdn.shopify.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="preload" href="assets/logo.png" as="image" />
+<link rel="preload" href="assets/fonts/Humane.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/SpaceMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ░ GRAIN-GRADIENT BACKGROUND (porcelain + plum, very lowkey) ░ -->
+<canvas class="bars" id="bars" aria-hidden="true"></canvas>
+
+<!-- ░ PRELOADER — the wordmark glitching, with a synthesised glitch SFX ░ -->
+<div class="load" id="load">
+  <div class="load__mark">
+    <!-- The still logo shows ONLY if the glitch clip cannot play. -->
+    <img class="load__still" id="loadStill" src="assets/logo.png" alt="Hildur Yeoman" />
+    <video class="load__glitch" id="loadGlitch" muted loop playsinline autoplay preload="auto" aria-hidden="true">
+      <source src="assets/logo-glitch.mp4" type="video/mp4" />
+    </video>
+  </div>
+</div>
+
+<!-- ░ NAV ░ -->
+<header class="nav" id="nav">
+  <nav class="nav__mid" aria-label="Main">
+    <a href="#ny">New in</a>
+    <a href="#flokkar">Shop</a>
+    <a href="#linur">AW ’25</a>
+    <a href="#film">Lookbook</a>
+  </nav>
+  <a href="#top" class="nav__brand" aria-label="Hildur Yeoman">
+    <span class="glogo" data-glogo>
+      <img src="assets/logo-white.png" alt="Hildur Yeoman" />
+      <video class="glogo__v" muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+        <source src="assets/logo-mark.mp4" type="video/mp4" />
+      </video>
+    </span>
+  </a>
+  <div class="nav__end">
+    <button class="nav__link" id="searchBtn">Search</button>
+    <button class="nav__link" id="bagBtn">Bag <span id="bagCount">(0)</span></button>
+    <!-- Same toggle as sndr-studio: MENU/CLOSE text roller + plus icon that spins to an X -->
+    <button class="nav__burger sm-toggle" id="burger" aria-label="Menu" aria-expanded="false"
+            data-label-open="Menu" data-label-close="Close">
+      <span class="sm-toggle-textwrap" aria-hidden="true"><span class="sm-toggle-textinner"><span class="sm-toggle-line">Menu</span></span></span>
+      <span class="sm-icon" aria-hidden="true"><span class="sm-icon-line"></span><span class="sm-icon-line sm-icon-line-v"></span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ░ MOBILE MENU ░ -->
+<div class="menu" id="menu" aria-hidden="true">
+  <a href="#ny"><i>01</i>New in</a>
+  <a href="#flokkar"><i>02</i>Shop</a>
+  <a href="#linur"><i>03</i>AW ’25</a>
+  <a href="#film"><i>04</i>Lookbook</a>
+  <div class="menu__foot"><span>Laugavegur 7 · 101 Reykjavík</span><a href="https://instagram.com/hilduryeoman" target="_blank" rel="noopener">@hilduryeoman</a></div>
+</div>
+
+<main id="top">
+
+  <!-- ░ HERO — full-colour campaign, wordmark overlapping the image ░ -->
+  <section class="hero">
+    <div class="hero__head">
+      <span class="mono">Hildur Yeoman — Reykjavík, Iceland</span>
+      <span class="mono">AW ’25</span>
+    </div>
+    <div class="hero__stage">
+      <img class="hero__fig" id="heroFig" alt="Hildur Yeoman AW ’25" fetchpriority="high"
+           src="https://hilduryeoman.com/cdn/shop/files/AW25_15_c09f6e75-bcc4-45cc-a0f0-d3b5493947aa.jpg?v=1763037287&width=900" />
+      <h1 class="hero__word">Autumn<br>winter ’25</h1>
+    </div>
+    <div class="hero__cta">
+      <span class="mono hero__tag">Designer fashion — Laugavegur 7</span>
+      <a href="#ny" class="link">[ Shop new arrivals ]</a>
+    </div>
+  </section>
+
+  <!-- ░ MARQUEE — real stocked labels only ░ -->
+  <div class="marq" aria-hidden="true">
+    <div class="marq__t" id="marq">
+      <span>New arrivals</span><em>·</em><span>AW ’25</span><em>·</em>
+      <span>Hildur Yeoman</span><em>·</em><span>Justine Clenquet</span><em>·</em>
+      <span>Ottolinger</span><em>·</em><span>MISBHV</span><em>·</em>
+    </div>
+  </div>
+
+  <!-- ░ 01 NEW ARRIVALS ░ -->
+  <section class="ny" id="ny">
+    <div class="head">
+      <span class="head__n">01.</span>
+      <h2 class="head__t">New arrivals</h2>
+      <div class="head__end">
+        <div class="rnav">
+          <button class="rnav__b" data-rail="rail" data-dir="-1" aria-label="Scroll left">←</button>
+          <button class="rnav__b" data-rail="rail" data-dir="1" aria-label="Scroll right">→</button>
+        </div>
+        <a href="https://hilduryeoman.com/collections/new-arrivals" class="link" target="_blank" rel="noopener">[ View all ]</a>
+      </div>
+    </div>
+    <div class="rail" id="rail" tabindex="0" aria-label="New arrivals"><div class="rail__t" id="railT"></div></div>
+  </section>
+
+  <!-- ░ 02 CATEGORIES ░ -->
+  <section class="flokkar" id="flokkar">
+    <div class="head">
+      <span class="head__n">02.</span>
+      <h2 class="head__t">Shop by category</h2>
+      <div class="head__end"><span class="mono">Four categories</span></div>
+    </div>
+    <div class="rolls" id="cats"></div>
+  </section>
+
+  <!-- ░ 03 THE AW ’25 COLLECTION — campaign sits WITH its products ░ -->
+  <section class="camp" id="camp">
+    <div class="camp__frame" id="campFrame">
+      <img class="camp__img" loading="lazy" alt="Hildur Yeoman AW ’25 campaign" src="https://hilduryeoman.com/cdn/shop/files/AW25_149f_9b606201-2d20-4519-b485-d560238a1f80.jpg?v=1763037602&width=1500" />
+    </div>
+    <div class="camp__over">
+      <span class="mono">03. — The collection</span>
+      <p class="camp__line">Hildur<br>Yeoman<br>AW ’25.</p>
+    </div>
+  </section>
+  <section class="best" id="linur">
+    <div class="head">
+      <span class="head__n"></span>
+      <h2 class="head__t">Shop the label</h2>
+      <div class="head__end">
+        <div class="rnav">
+          <button class="rnav__b" data-rail="railS" data-dir="-1" aria-label="Scroll left">←</button>
+          <button class="rnav__b" data-rail="railS" data-dir="1" aria-label="Scroll right">→</button>
+        </div>
+        <a href="https://hilduryeoman.com/" class="link" target="_blank" rel="noopener">[ View all ]</a>
+      </div>
+    </div>
+    <div class="rail" id="railS" tabindex="0" aria-label="Hildur Yeoman label"><div class="rail__t" id="railST"></div></div>
+  </section>
+
+  <!-- ░ 04 LOOKBOOK — horizontal scroll-hijack ░ -->
+  <section class="pan" id="film">
+    <div class="pan__track" id="panTrack">
+      <div class="pan__intro">
+        <div class="pan__bg"><img src="https://hilduryeoman.com/cdn/shop/files/493A3621.jpg?v=1756900186&width=1100" alt="Hildur Yeoman lookbook" loading="lazy"/></div>
+        <span class="head__n">04.</span>
+        <h2 class="pan__title">The<br>lookbook</h2>
+        <span class="mono pan__hint">AW ’25 — keep scrolling →</span>
+      </div>
+      <!-- JS injects pan__i frames -->
+    </div>
+    <div class="pan__prog" aria-hidden="true"><span id="panProg"></span></div>
+  </section>
+
+  <!-- ░ 05 AS WORN — editorial wall ░ -->
+  <section class="seen" id="seen">
+    <div class="seen__wall" id="seenWall"><!-- JS: 3 auto-scrolling columns of campaign imagery --></div>
+    <div class="seen__overlay">
+      <span class="mono seen__n">05.</span>
+      <h2 class="seen__title">Hildur Yeoman,<br>as worn.</h2>
+      <span class="mono">Show how you wear it on Instagram — @hilduryeoman.</span>
+    </div>
+  </section>
+
+  <!-- ░ 06 STORE ░ -->
+  <section class="budin" id="budin">
+    <div class="head">
+      <span class="head__n">06.</span>
+      <h2 class="head__t">Visit the store</h2>
+      <div class="head__end"><span class="mono">101 Reykjavík</span></div>
+    </div>
+    <div class="budin__grid">
+      <div class="budin__row"><span class="mono">Address</span><span>Laugavegur 7, 101 Reykjavík</span></div>
+      <div class="budin__row"><span class="mono">Email</span><a href="mailto:sales@hilduryeoman.com">sales@hilduryeoman.com</a></div>
+      <div class="budin__row"><span class="mono">Follow</span><a href="https://instagram.com/hilduryeoman" target="_blank" rel="noopener">@hilduryeoman</a></div>
+      <div class="budin__row"><span class="mono">Labels</span><span>Hildur Yeoman · Justine Clenquet · Ottolinger · MISBHV · American Vintage</span></div>
+    </div>
+  </section>
+
+  <!-- ░ NEWSLETTER ░ -->
+  <section class="news" id="news">
+    <span class="mono">(First to know)</span>
+    <h2 class="news__t">New drops,<br>first.</h2>
+    <p class="mono news__sub">New arrivals and collection news, straight from Laugavegur 7.</p>
+    <form class="news__form" id="newsForm" novalidate>
+      <input id="newsEmail" type="email" placeholder="your@email.com" autocomplete="email" required />
+      <button class="link" type="submit">[ Sign up ]</button>
+    </form>
+    <p class="mono news__msg" id="newsMsg" role="status"></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot__word">
+    <span class="glogo" data-glogo>
+      <img src="assets/logo.png" alt="Hildur Yeoman" />
+      <video class="glogo__v" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
+        <source src="assets/logo-mark.mp4" type="video/mp4" />
+      </video>
+    </span>
+  </div>
+  <div class="foot__grid">
+    <div><span class="mono">Shop</span><a href="#ny">New arrivals</a><a href="#flokkar">Dresses</a><a href="#flokkar">Jewellery</a><a href="#flokkar">Shoes</a></div>
+    <div><span class="mono">Label</span><a href="#linur">Hildur Yeoman</a><a href="#film">Lookbook</a><a href="#seen">As worn</a></div>
+    <div><span class="mono">Follow</span><a href="https://instagram.com/hilduryeoman" target="_blank" rel="noopener">Instagram</a></div>
+    <div><span class="mono">Store</span><a href="#budin">Laugavegur 7</a><a href="mailto:sales@hilduryeoman.com">Email</a></div>
+  </div>
+  <div class="foot__base">
+    <span class="mono">© 2026 Hildur Yeoman · Reykjavík, Iceland</span>
+    <span class="mono">Redesign by <a href="https://sndr-studio.pages.dev" target="_blank" rel="noopener">SNDR Studio</a></span>
+  </div>
+</footer>
+
+<!-- ░ BAG DRAWER ░ -->
+<div class="bag" id="bag" aria-hidden="true">
+  <div class="bag__scrim" id="bagScrim"></div>
+  <aside class="bag__panel" role="dialog" aria-modal="true" aria-labelledby="bagTitle">
+    <header class="bag__head">
+      <h2 class="bag__title" id="bagTitle">Your bag <span id="bagQty">(0)</span></h2>
+      <button class="link" id="bagClose">[ Close ]</button>
+    </header>
+    <div class="bag__items" id="bagItems"></div>
+    <footer class="bag__foot" id="bagFoot">
+      <div class="bag__sum"><span class="mono">Subtotal</span><span class="bag__total" id="bagTotal">0 kr</span></div>
+      <p class="mono bag__note">Shipping calculated at checkout.</p>
+      <button class="bag__go" id="bagGo">Checkout</button>
+    </footer>
+  </aside>
+</div>
+
+<!-- defer keeps these off the critical path; execution order is still guaranteed -->
+<script defer src="assets/data.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script defer src="app.js"></script>
+</body>
+</html>
