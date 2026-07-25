@@ -3,6 +3,8 @@
    Warm near-black · porcelain · ONE molten-copper accent.
    ══════════════════════════════════════════════════════════════ */
 
+@font-face{font-family:"Bodoni Moda";src:url("assets/fonts/BodoniModa-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Bodoni Moda";src:url("assets/fonts/BodoniModa-500i.woff2") format("woff2");font-weight:500;font-style:italic;font-display:swap}
 @font-face{font-family:"Humane";src:url("assets/fonts/Humane.woff2") format("woff2");font-weight:100 900;font-display:swap}
 @font-face{font-family:"Space Mono";src:url("assets/fonts/SpaceMono-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Space Mono";src:url("assets/fonts/SpaceMono-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
@@ -13,6 +15,7 @@
   --accent:#8a2560;--accent-soft:rgba(138,37,96,.4);
   --line:rgba(23,18,26,.14);
   --ff-d:"Humane","Arial Narrow",sans-serif;
+  --ff-s:"Bodoni Moda",Georgia,serif;
   --ff-m:"Space Mono",ui-monospace,monospace;
   --ease:cubic-bezier(.19,1,.22,1);
   --pad:clamp(18px,5vw,90px);
@@ -49,7 +52,7 @@ main,.foot{position:relative;z-index:1}
 .link:hover{color:var(--accent);background-size:100% 1px}
 
 /* ══ VERTICAL-BARS BACKGROUND (canvas, ported from 21st.dev) ══ */
-.bars{position:fixed;inset:0;z-index:0;pointer-events:none;display:block;width:100%;height:100%;opacity:.4}
+.bars{position:fixed;inset:0;z-index:0;pointer-events:none;display:block;width:100%;height:100%;opacity:.16}
 
 /* ══ PRELOADER — copper rises through the wordmark ══ */
 /* Pure black, deliberately: it matches the glitch clip's own black background
@@ -112,32 +115,19 @@ body.menu-open .menu{clip-path:inset(0 0 0 0);pointer-events:auto}
 .hero__head{display:flex;justify-content:space-between;gap:16px}
 .hero__stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:clamp(10px,2vw,24px) 0}
 .hero__fig{height:min(58vh,560px);width:auto;object-fit:contain}
-.hero__word,.hero__ghost{position:absolute;left:0;right:0;bottom:-4%;margin:0;text-align:center;
-  padding:0 var(--pad);font-family:var(--ff-d);font-weight:600;font-size:clamp(44px,9.4vw,150px);
-  line-height:.8;text-transform:uppercase;letter-spacing:.005em;pointer-events:none}
-/* the real headline: brand plum, inverts against photography */
-.hero__word{z-index:4;color:var(--accent);mix-blend-mode:difference;filter:url(#hyMelt)}
-/* chromatic ghosts: offset colour separations that jitter, melted by the same filter */
-.hero__type{position:absolute;inset:0;z-index:3;pointer-events:none}
-.hero__ghost{filter:url(#hyMelt)}
-/* Ghosts are plain palette-coloured offsets (NOT difference): stacking three
-   difference layers compounds into muddy green. Only the real headline inverts. */
-.hero__ghost--c{color:#7a2d80;opacity:.55;animation:hyAbr 3.4s steps(1,end) infinite}
-.hero__ghost--m{color:#c9628f;opacity:.5;animation:hyAbr2 4.1s steps(1,end) infinite}
-@keyframes hyAbr{
-  0%,72%{transform:translate3d(-3px,2px,0)}
-  74%{transform:translate3d(9px,-4px,0)}
-  76%{transform:translate3d(-7px,3px,0)}
-  78%,100%{transform:translate3d(-3px,2px,0)}}
-@keyframes hyAbr2{
-  0%,64%{transform:translate3d(4px,-2px,0)}
-  66%{transform:translate3d(-11px,5px,0)}
-  69%{transform:translate3d(6px,-6px,0)}
-  71%,100%{transform:translate3d(4px,-2px,0)}}
-@media(prefers-reduced-motion:reduce){
-  .hero__ghost--c,.hero__ghost--m{animation:none}
-  .hero__word,.hero__ghost{filter:none}
-}
+.hero__word{position:absolute;left:0;right:0;bottom:2%;margin:0;text-align:center;padding:0 var(--pad);
+  z-index:4;pointer-events:none;display:flex;flex-direction:column;line-height:.86}
+.hero__l1,.hero__l2{font-family:var(--ff-s);font-weight:500;text-transform:lowercase;
+  font-size:clamp(56px,13vw,210px);letter-spacing:-.015em;
+  /* the letters are cut out of her own campaign photograph, tinted to brand plum */
+  background-image:linear-gradient(rgba(138,37,96,.62),rgba(138,37,96,.62)),var(--hy-fill,none);
+  background-size:cover;background-position:center 28%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-fill-color:transparent}
+.hero__l2{margin-top:-.12em}
+.hero__l2 em{font-style:italic}
+/* no photo yet (or unsupported): fall back to solid plum so it never vanishes */
+@supports not (-webkit-background-clip:text){.hero__l1,.hero__l2{color:var(--accent);-webkit-text-fill-color:currentColor}}
 .hero__cta{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .hero__tag{color:var(--dim)}
 

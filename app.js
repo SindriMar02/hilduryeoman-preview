@@ -602,7 +602,7 @@ void main() {
     const U = { colors: u('u_colors'), scene: u('u_scene'), shape: u('u_shape'), surface: u('u_surface'), finish: u('u_finish'), transform: u('u_transform'), space: u('u_space'), cursor: u('u_cursor') };
     // Coppermine palette: obsidian field, one molten-copper band, grain
     const base = [0.968, 0.953, 0.937];
-    const colors = [[0.945, 0.925, 0.905], [0.905, 0.862, 0.845], [0.62, 0.28, 0.46], base, base, base, base, base];
+    const colors = [[0.965, 0.949, 0.933], [0.929, 0.898, 0.886], [0.78, 0.60, 0.70], base, base, base, base, base];
     const P = { colorCount: 4, scale: 1.92, intensity: 0.7, paramA: 0.26, warp: 0.06, detail: 2.624, contrast: 1.0, brightness: 0.004, saturation: 0.8, hue: 0, vignette: 0.12, blur: 0, grain: 0.04, seed: 1, rotate: 1.9373, drift: 0.02, oklab: 0, timeScale: 0.8 };
     gl.uniform3fv(U.colors, new Float32Array(colors.flat()));
     gl.uniform4f(U.shape, P.scale, P.intensity, P.paramA, P.warp);
@@ -706,12 +706,16 @@ void main() {
       el.style.filter = centre ? 'none' : 'blur(4px)';
       el.style.visibility = Math.abs(pos) > 1 ? 'hidden' : 'visible';
     });
-    const go = d => { cur = (cur + d + total) % total; layout(); };
+    // the headline is filled with whichever campaign frame is centre stage
+    const word = $('.hero__word');
+    const syncFill = () => word && word.style.setProperty('--hy-fill', `url("${px(shots[cur], 1200)}")`);
+    const go = d => { cur = (cur + d + total) % total; layout(); syncFill(); };
+    syncFill();
     layout();
 
     $('#fcarNext') && $('#fcarNext').addEventListener('click', () => go(1));
     $('#fcarPrev') && $('#fcarPrev').addEventListener('click', () => go(-1));
-    slides.forEach((el, i) => el.addEventListener('click', () => { cur = i; layout(); }));
+    slides.forEach((el, i) => el.addEventListener('click', () => { cur = i; layout(); syncFill(); }));
 
     if (!reduced) {
       let timer = setInterval(() => go(1), 4000);

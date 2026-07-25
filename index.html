@@ -12,6 +12,7 @@
 <link rel="preload" href="assets/logo.png" as="image" />
 <link rel="preload" href="assets/fonts/Humane.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="assets/fonts/SpaceMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/BodoniModa-500.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -19,13 +20,6 @@
 <!-- ░ GRAIN-GRADIENT BACKGROUND (porcelain + plum, very lowkey) ░ -->
 <canvas class="bars" id="bars" aria-hidden="true"></canvas>
 
-<!-- liquid displacement filter for the hero headline (static: rasterised once) -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <filter id="hyMelt" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
-    <feTurbulence type="fractalNoise" baseFrequency="0.011 0.028" numOctaves="2" seed="7" result="n"/>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="20" xChannelSelector="R" yChannelSelector="G"/>
-  </filter>
-</svg>
 
 
 <!-- ░ PRELOADER — soft blur-to-sharp wordmark, plum hairline, silent ░ -->
@@ -82,11 +76,7 @@
       <div class="fcar" id="fcar" aria-roledescription="carousel" aria-label="Spring / Summer ’26 campaign"></div>
       <button class="rnav__b fcar__btn fcar__btn--l" id="fcarPrev" aria-label="Previous image">←</button>
       <button class="rnav__b fcar__btn fcar__btn--r" id="fcarNext" aria-label="Next image">→</button>
-      <div class="hero__type" aria-hidden="true">
-        <span class="hero__ghost hero__ghost--c">Spring<br>summer ’26</span>
-        <span class="hero__ghost hero__ghost--m">Spring<br>summer ’26</span>
-      </div>
-      <h1 class="hero__word">Spring<br>summer ’26</h1>
+      <h1 class="hero__word"><span class="hero__l1">Spring</span><span class="hero__l2">summer <em>’26</em></span></h1>
     </div>
     <div class="hero__cta">
       <span class="mono hero__tag">Designer fashion — Laugavegur 7</span>
