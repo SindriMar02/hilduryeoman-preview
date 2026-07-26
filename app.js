@@ -313,10 +313,6 @@
 
   /* ── marquee seamless ── */
   const marq = $('#marq'); if (marq && !reduced) marq.innerHTML += marq.innerHTML;
-  /* Mirror the finished markup into the goo layer. Assigning innerHTML does not
-     restart the element's own CSS animation, so the two tracks stay in phase. */
-  const marqGoo = $('#marqGoo');
-  if (marqGoo && marq) marqGoo.innerHTML = marq.innerHTML;
 
   /* ══ GRAIN-GRADIENT BACKGROUND (paper-design grain-gradient, ported from 21st.dev) ══ */
   function shaderBackground() {

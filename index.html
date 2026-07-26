@@ -92,17 +92,18 @@
 
   <!-- ░ MARQUEE — real stocked labels only ░ -->
   <div class="marq" aria-hidden="true">
-    <!-- Goo layer: the same words, blurred and then contrast-crushed so neighbouring
-         letters swell into one another. It is monochrome on purpose — contrast() that
-         steep saturates any real colour (plum would come out pure red) — and is
-         multiplied back over the porcelain so the palette survives. app.js mirrors the
-         crisp track's markup into it; both tracks exist at parse time so the shared
-         CSS animation keeps them in lockstep. -->
-    <div class="marq__goo"><div class="marq__t" id="marqGoo"></div></div>
-    <div class="marq__t" id="marq">
-      <span>New arrivals</span><em>·</em><span>Spring / Summer ’26</span><em>·</em>
-      <span>Hildur Yeoman</span><em>·</em><span>Justine Clenquet</span><em>·</em>
-      <span>Ottolinger</span><em>·</em><span>MISBHV</span><em>·</em>
+    <!-- The words ARE the goo: blurred and then contrast-crushed, so the penumbra snaps
+         back to a rounded silhouette and neighbouring letters swell until they touch.
+         Monochrome on purpose — a crush that steep saturates real colour, plum would
+         come out pure red — and multiplied back over the porcelain so the palette
+         survives. The track's own alpha ramps down toward both ends, which leaves those
+         letters half-crushed so they erode into droplets instead of merely fading. -->
+    <div class="marq__goo">
+      <div class="marq__t" id="marq">
+        <span>New arrivals</span><em>·</em><span>Spring / Summer ’26</span><em>·</em>
+        <span>Hildur Yeoman</span><em>·</em><span>Justine Clenquet</span><em>·</em>
+        <span>Ottolinger</span><em>·</em><span>MISBHV</span><em>·</em>
+      </div>
     </div>
   </div>
 
