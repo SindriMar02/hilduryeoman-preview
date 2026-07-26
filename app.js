@@ -311,9 +311,6 @@
     setTimeout(() => rv.forEach(el => { if (el.getBoundingClientRect().top < innerHeight * 1.3) el.classList.add('in'); }), 2600);
   }
 
-  /* ── marquee seamless ── */
-  const marq = $('#marq'); if (marq && !reduced) marq.innerHTML += marq.innerHTML;
-
   /* ══ GRAIN-GRADIENT BACKGROUND (paper-design grain-gradient, ported from 21st.dev) ══ */
   function shaderBackground() {
     if (reduced) return;
